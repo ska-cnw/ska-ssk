@@ -1,4 +1,0 @@
-This is test.
-This is also test.
-...
-
