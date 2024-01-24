@@ -1,2 +1,0 @@
-# ska-ssk
-ska-hi
