@@ -1,1 +1,1 @@
-export { CopyButtonTooltip } from './Buttons';
+export { CopyButtonTooltip, CopyButtonWithText } from './Buttons';

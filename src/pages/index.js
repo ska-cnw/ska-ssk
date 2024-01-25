@@ -1,4 +1,4 @@
-import { CopyButtonTooltip } from '@/components';
+import { CopyButtonWithText } from '@/components';
 import Head from 'next/head';
 
 export default function Home() {
@@ -13,7 +13,8 @@ export default function Home() {
 				<br />
 				<br />
 				<br />
-				<CopyButtonTooltip copyString='Copied!' fontSize='small' />
+				<CopyButtonWithText copyString='sana' fontSize='small' />
+				<CopyButtonWithText copyString='yama' fontSize='small' />
 			</main>
 		</>
 	);

@@ -1,4 +1,4 @@
-import { IconButton, Tooltip } from '@mui/material';
+import { IconButton, Paper, Tooltip } from '@mui/material';
 import { useState } from 'react';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 
@@ -13,7 +13,7 @@ export const CopyButtonTooltip = ({ copyString, fontSize }) => {
 
 	return (
 		<Tooltip
-			title='nabe pa'
+			title='Copied!'
 			arrow
 			placement='top'
 			open={open}
@@ -21,8 +21,35 @@ export const CopyButtonTooltip = ({ copyString, fontSize }) => {
 			onClose={() => setOpen(false)}
 		>
 			<IconButton>
-				<ContentCopyIcon fontSize={fontSize} />
+				<ContentCopyIcon fontSize={fontSize} sx={{ color: 'gray' }} />
 			</IconButton>
 		</Tooltip>
+	);
+};
+
+export const CopyButtonWithText = ({ copyString, fontSize }) => {
+	return (
+		<Paper
+			component='form'
+			sx={{
+				width: 400,
+				p: '5px',
+				display: 'flex', 
+				alignItems: 'center',
+				bgcolor: '#222222'
+			}}
+		>
+			<Paper
+				sx={{
+					width: 350,
+					p: '5px',
+					bgcolor: '#222222',
+					color: 'white'
+				}}
+			>
+				{copyString}
+			</Paper>
+			<CopyButtonTooltip copyString={copyString} fontSize={fontSize} />
+		</Paper>
 	);
 };
