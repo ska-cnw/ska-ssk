@@ -1,12 +1,27 @@
-import { AppBar, Box, Button, Divider, IconButton, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Toolbar, Typography } from '@mui/material';
+import { AppBar, Box, Button, IconButton, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Toolbar, Typography } from '@mui/material';
 import { useState } from 'react';
 import MenuIcon from '@mui/icons-material/Menu';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
+import KebabDiningIcon from '@mui/icons-material/KebabDining';
+import RamenDiningIcon from '@mui/icons-material/RamenDining';
+import LunchDiningIcon from '@mui/icons-material/LunchDining';
 import { TemporaryDrawer } from '../Drawer';
+import Link from 'next/link';
 
 export const ButtonAppBar = ({ title }) => {
 	const [open, setOpen] = useState(false);
+
+	const item = (icon, text, link) => (
+		<ListItem disablePadding>
+			<Link href={link}>
+				<ListItemButton>
+					<ListItemIcon>
+						{icon}
+					</ListItemIcon>
+					<ListItemText primary={text} />
+				</ListItemButton>
+			</Link>
+		</ListItem>
+	);
 
 	const list = (
 		<Box
@@ -16,29 +31,9 @@ export const ButtonAppBar = ({ title }) => {
 			onKeyDown={() => setOpen(false)}
 		>
 			<List>
-				{['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-					<ListItem key={text} disablePadding>
-						<ListItemButton>
-							<ListItemIcon>
-								{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-							</ListItemIcon>
-							<ListItemText primary={text} />
-						</ListItemButton>
-					</ListItem>
-				))}
-			</List>
-			<Divider />
-			<List>
-				{['All mail', 'Trash', 'Spam'].map((text, index) => (
-					<ListItem key={text} disablePadding>
-						<ListItemButton>
-							<ListItemIcon>
-								{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-							</ListItemIcon>
-							<ListItemText primary={text} />
-						</ListItemButton>
-					</ListItem>
-				))}
+				{item(<KebabDiningIcon />, 'yakiniku1', '/')}
+				{item(<RamenDiningIcon />, 'yakiniku2', '/yakiniku2')}
+				{item(<LunchDiningIcon />, 'yakiniku3', '/yakiniku3')}
 			</List>
 		</Box>
 	);
