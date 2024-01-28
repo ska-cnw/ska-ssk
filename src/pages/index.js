@@ -1,4 +1,4 @@
-import { ButtonAppBar, CopyButtonWithText, TemporaryDrawer } from '@/components';
+import { ButtonAppBar, CopyButtonWithText } from '@/components';
 import Head from 'next/head';
 
 export default function Home() {
