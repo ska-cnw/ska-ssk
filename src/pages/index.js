@@ -75,7 +75,7 @@ export default function Home({ settings, params }) {
 				))}
 				<br />
 				{queryParams.map((q, i) => (
-					<Link href={{ pathname: '/', query: q.query }}>
+					<Link href={{ pathname: '/', query: q.query }} key={i}>
 						<Button variant='outlined'>{q.label}</Button>
 					</Link>
 				))}
