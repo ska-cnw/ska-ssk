@@ -56,6 +56,18 @@ export default function Home({ settings, params }) {
 		{ label: 'cond3', query: 'param1=123&param2=234&param[]=1&param[]=2' },
 	];
 
+	const calcRandomNumber = (min, max) => {
+		if (min > max) {
+			const tmp = min;
+			min = max;
+			max = tmp;
+		}
+
+		const random = Math.random();
+		const baseRange = Math.floor(random * (max - min + 1));
+		return (baseRange + min);
+	};
+
 	return (
 		<>
 			<Head>
@@ -93,38 +105,38 @@ export default function Home({ settings, params }) {
 					: <div>param[0]: {params.param[0]}</div>
 				}
 				<br />
-				<CopyButtonWithText copyString='sana' fontSize='small' />
-				<CopyButtonWithText copyString='yama' fontSize='small' />
-				<CopyButtonWithText copyString='sana' fontSize='small' />
-				<CopyButtonWithText copyString='yama' fontSize='small' />
-				<CopyButtonWithText copyString='sana' fontSize='small' />
-				<CopyButtonWithText copyString='yama' fontSize='small' />
-				<CopyButtonWithText copyString='sana' fontSize='small' />
-				<CopyButtonWithText copyString='yama' fontSize='small' />
-				<CopyButtonWithText copyString='sana' fontSize='small' />
-				<CopyButtonWithText copyString='yama' fontSize='small' />
-				<CopyButtonWithText copyString='sana' fontSize='small' />
-				<CopyButtonWithText copyString='yama' fontSize='small' />
-				<CopyButtonWithText copyString='sana' fontSize='small' />
-				<CopyButtonWithText copyString='yama' fontSize='small' />
-				<CopyButtonWithText copyString='sana' fontSize='small' />
-				<CopyButtonWithText copyString='yama' fontSize='small' />
-				<CopyButtonWithText copyString='sana' fontSize='small' />
-				<CopyButtonWithText copyString='yama' fontSize='small' />
-				<CopyButtonWithText copyString='sana' fontSize='small' />
-				<CopyButtonWithText copyString='yama' fontSize='small' />
-				<CopyButtonWithText copyString='sana' fontSize='small' />
-				<CopyButtonWithText copyString='yama' fontSize='small' />
-				<CopyButtonWithText copyString='sana' fontSize='small' />
-				<CopyButtonWithText copyString='yama' fontSize='small' />
-				<CopyButtonWithText copyString='sana' fontSize='small' />
-				<CopyButtonWithText copyString='yama' fontSize='small' />
-				<CopyButtonWithText copyString='sana' fontSize='small' />
-				<CopyButtonWithText copyString='yama' fontSize='small' />
-				<CopyButtonWithText copyString='sana' fontSize='small' />
-				<CopyButtonWithText copyString='yama' fontSize='small' />
-				<CopyButtonWithText copyString='sana' fontSize='small' />
-				<CopyButtonWithText copyString='yama' fontSize='small' />
+				<CopyButtonWithText copyString='sana' fontSize='small' width={calcRandomNumber(200, 500)} />
+				<CopyButtonWithText copyString='yama' fontSize='small' width={calcRandomNumber(200, 500)} />
+				<CopyButtonWithText copyString='sana' fontSize='small' width={calcRandomNumber(200, 500)} />
+				<CopyButtonWithText copyString='yama' fontSize='small' width={calcRandomNumber(200, 500)} />
+				<CopyButtonWithText copyString='sana' fontSize='small' width={calcRandomNumber(200, 500)} />
+				<CopyButtonWithText copyString='yama' fontSize='small' width={calcRandomNumber(200, 500)} />
+				<CopyButtonWithText copyString='sana' fontSize='small' width={calcRandomNumber(200, 500)} />
+				<CopyButtonWithText copyString='yama' fontSize='small' width={calcRandomNumber(200, 500)} />
+				<CopyButtonWithText copyString='sana' fontSize='small' width={calcRandomNumber(200, 500)} />
+				<CopyButtonWithText copyString='yama' fontSize='small' width={calcRandomNumber(200, 500)} />
+				<CopyButtonWithText copyString='sana' fontSize='small' width={calcRandomNumber(200, 500)} />
+				<CopyButtonWithText copyString='yama' fontSize='small' width={calcRandomNumber(200, 500)} />
+				<CopyButtonWithText copyString='sana' fontSize='small' width={calcRandomNumber(200, 500)} />
+				<CopyButtonWithText copyString='yama' fontSize='small' width={calcRandomNumber(200, 500)} />
+				<CopyButtonWithText copyString='sana' fontSize='small' width={calcRandomNumber(200, 500)} />
+				<CopyButtonWithText copyString='yama' fontSize='small' width={calcRandomNumber(200, 500)} />
+				<CopyButtonWithText copyString='sana' fontSize='small' width={calcRandomNumber(200, 500)} />
+				<CopyButtonWithText copyString='yama' fontSize='small' width={calcRandomNumber(200, 500)} />
+				<CopyButtonWithText copyString='sana' fontSize='small' width={calcRandomNumber(200, 500)} />
+				<CopyButtonWithText copyString='yama' fontSize='small' width={calcRandomNumber(200, 500)} />
+				<CopyButtonWithText copyString='sana' fontSize='small' width={calcRandomNumber(200, 500)} />
+				<CopyButtonWithText copyString='yama' fontSize='small' width={calcRandomNumber(200, 500)} />
+				<CopyButtonWithText copyString='sana' fontSize='small' width={calcRandomNumber(200, 500)} />
+				<CopyButtonWithText copyString='yama' fontSize='small' width={calcRandomNumber(200, 500)} />
+				<CopyButtonWithText copyString='sana' fontSize='small' width={calcRandomNumber(200, 500)} />
+				<CopyButtonWithText copyString='yama' fontSize='small' width={calcRandomNumber(200, 500)} />
+				<CopyButtonWithText copyString='sana' fontSize='small' width={calcRandomNumber(200, 500)} />
+				<CopyButtonWithText copyString='yama' fontSize='small' width={calcRandomNumber(200, 500)} />
+				<CopyButtonWithText copyString='sana' fontSize='small' width={calcRandomNumber(200, 500)} />
+				<CopyButtonWithText copyString='yama' fontSize='small' width={calcRandomNumber(200, 500)} />
+				<CopyButtonWithText copyString='sana' fontSize='small' width={calcRandomNumber(200, 500)} />
+				<CopyButtonWithText copyString='yama' fontSize='small' width={calcRandomNumber(200, 500)} />
 			</main>
 		</>
 	);

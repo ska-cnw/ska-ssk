@@ -27,12 +27,12 @@ export const CopyButtonTooltip = ({ copyString, fontSize }) => {
 	);
 };
 
-export const CopyButtonWithText = ({ copyString, fontSize }) => {
+export const CopyButtonWithText = ({ copyString, fontSize, width }) => {
 	return (
 		<Paper
 			component='form'
 			sx={{
-				width: 400,
+				width: width,
 				p: '5px',
 				display: 'flex', 
 				alignItems: 'center',
@@ -41,7 +41,7 @@ export const CopyButtonWithText = ({ copyString, fontSize }) => {
 		>
 			<Paper
 				sx={{
-					width: 350,
+					width: width - 50,
 					p: '5px',
 					bgcolor: '#222222',
 					color: 'white'
