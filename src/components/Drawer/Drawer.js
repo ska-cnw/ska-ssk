@@ -8,6 +8,8 @@ export const TemporaryDrawer = ({ open, setOpen, list }) => {
 				anchor='left'
 				open={open}
 				onClose={() => setOpen(false)}
+				sx={{ zIndex: 0 }}
+				PaperProps={{ sx: { bgcolor: 'skyblue' } }}
 			>
 				{list}
 			</Drawer>

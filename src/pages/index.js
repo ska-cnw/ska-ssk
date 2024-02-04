@@ -1,4 +1,4 @@
-import { ButtonAppBar, CopyButtonWithText } from '@/components';
+import { CopyButtonWithText, Layout } from '@/components';
 import { Button, Checkbox, FormControlLabel } from '@mui/material';
 import Head from 'next/head';
 import Link from 'next/link';
@@ -75,9 +75,7 @@ export default function Home({ settings, params }) {
 				<link rel='icon' href='/favicon.ico' />
 			</Head>
 
-			<ButtonAppBar title='yakiniku1' />
-
-			<main>
+			<Layout title='yakiniku1'>
 				{checkSet.map((data, index) => (
 					<FormControlLabel
 						key={index}
@@ -137,7 +135,7 @@ export default function Home({ settings, params }) {
 				<CopyButtonWithText copyString='yama' fontSize='small' width={calcRandomNumber(200, 500)} />
 				<CopyButtonWithText copyString='sana' fontSize='small' width={calcRandomNumber(200, 500)} />
 				<CopyButtonWithText copyString='yama' fontSize='small' width={calcRandomNumber(200, 500)} />
-			</main>
+			</Layout>
 		</>
 	);
 };
