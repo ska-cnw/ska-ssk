@@ -1,24 +1,21 @@
-import { useState } from 'react';
-import { Box } from '@mui/material';
-import { ButtonAppBar } from '../AppBar';
-import { SidebarItems } from './SidebarItems';
+import { AppBar, Button, Toolbar, Typography } from '@mui/material';
+import { HamburgerMenu } from './HamburgerMenu';
 
-export const Header = ({ title, headerHeight, iconColor }) => {
-	const [open, setOpen] = useState(false);
-
-	const list = (
-		<Box
-			sx={{ width: 200 }}
-			role='presentation'
-			onClick={() => setOpen(false)}
-			onKeyDown={() => setOpen(false)}
-		>
-			<Box height={headerHeight} />
-			<SidebarItems color={iconColor} onlyIcon={false} />
-		</Box>
-	);
-
+export const Header = ({ title, height, iconColor }) => {
 	return (
-		<ButtonAppBar title={title} open={open} setOpen={setOpen} list={list} />
+		<>
+			<AppBar position='fixed'>
+				<Toolbar>
+					<HamburgerMenu height={height} iconColor={iconColor} />
+
+					<Typography variant='h6' component='div' sx={{ flexGrow: 1 }}>
+						{title}
+					</Typography>
+
+					<Button color='inherit'>Login</Button>
+				</Toolbar>
+			</AppBar>
+			<Toolbar />
+		</>
 	);
 };

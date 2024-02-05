@@ -28,7 +28,7 @@ export const Layout = ({ title, children }) => {
 					p: 1,
 				}}
 			>
-				<Header title={title} headerHeight={headerHeight} iconColor={iconColor} />
+				<Header title={title} height={headerHeight} iconColor={iconColor} />
 
 				{children}
 			</Box>
