@@ -1,4 +1,5 @@
 import { CopyButtonWithText, Layout } from '@/components';
+import { Container } from '@/components/DragAndDrop';
 import { Box } from '@mui/material';
 import Head from 'next/head';
 import Link from 'next/link';
@@ -24,6 +25,8 @@ const Food = ({ title }) => {
 				<Box height={50} bgcolor='darkcyan' />
 				<Box height={50} bgcolor='lightsteelblue' />
 				<CopyButtonWithText copyString={title} fontSize='small' width={300} />
+
+				<Container />
 
 				<Link href='/'>Go Home</Link>
 			</Layout>

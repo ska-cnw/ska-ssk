@@ -20,7 +20,7 @@ export const SidebarItems = ({ color, onlyIcon }) => {
 		{ icon: <RamenDiningIcon />,	label: 'Ramen',			href: '/Ramen'		},
 		{ icon: <LunchDiningIcon />,	label: 'Lunch',			href: '/Lunch'		},
 		{ icon: <FastfoodIcon />,			label: 'Fastfood',	href: '/Fastfood'	},
-		{ icon: <IcecreamIcon />,			label: 'Icecream',	href: '/Icecream'	},
+		{ icon: <IcecreamIcon />,			label: 'Icecream',	href: 'https://www.ezcater.com/lunchrush/office/most-popular-types-of-pizza-around-country/'	},
 		{ icon: <RiceBowlIcon />,			label: 'RiceBow',		href: '/RiceBow'	},
 		{ icon: <CakeIcon />,					label: 'Cake',			href: '/Cake'			},
 		{ icon: <SetMealIcon />,			label: 'SetMeal',		href: '/SetMeal'	},
