@@ -22,7 +22,7 @@ export const Layout = ({ title, children }) => {
 			<Box
 				sx={{
 					flexGrow: 1,
-					bgcolor: '#9999FF',
+					bgcolor: '#000035',
 					display: 'flex',
 					flexDirection: 'column',
 					p: 1,

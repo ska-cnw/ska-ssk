@@ -10,7 +10,18 @@ export const SortableContainer = ({ id, items, label }) => {
 		<Box sx={{ m: 2 }}>
 			<h3>{label}</h3>
 			<SortableContext id={id} items={items} strategy={rectSortingStrategy}>
-				<Box ref={setNodeRef} sx={{ bgcolor: 'gray', p: 1 }}>
+				<Box
+					ref={setNodeRef}
+					sx={{
+						display: 'flex',
+						flexDirection: 'column',
+						alignItems: 'center',
+						bgcolor: '#cccccc',
+						width: 250,
+						minHeight: 100,
+						p: 1
+					}}
+				>
 					{items.map((id) => (
 						<SortableItem key={id} id={id} />
 					))}
