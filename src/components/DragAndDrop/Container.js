@@ -2,8 +2,8 @@ import { DndContext, DragOverlay, KeyboardSensor, PointerSensor, closestCorners,
 import { arrayMove, sortableKeyboardCoordinates } from '@dnd-kit/sortable';
 import { useState } from 'react';
 import { SortableContainer } from './SortableContainer';
-import { Item } from './Item';
-import { Box } from '@mui/material';
+import { Box, Button } from '@mui/material';
+import { DraggingItem } from './DraggingItem';
 
 export const Container = () => {
 	const [items, setItems] = useState({
@@ -12,8 +12,6 @@ export const Container = () => {
 		container3: ['Hawaiian Pizza', 'Buffalo Pizza', 'Supreme Pizza'],
 		container4: ['The Works Pizza'],
 	});
-
-	const [activeId, setActiveId] = useState();
 
 	const sensors = useSensors(
 		useSensor(PointerSensor),
@@ -29,12 +27,6 @@ export const Container = () => {
 		return Object.keys(items).find((key) => (
 			items[key].includes(id.toString())
 		));
-	};
-
-	const handleDragStart = (e) => {
-		const { active } = e;
-		const id = active.id.toString();
-		setActiveId(id);
 	};
 
 	const handleDragOver = (e) => {
@@ -118,15 +110,43 @@ export const Container = () => {
 				),
 			}));
 		}
-		setActiveId(undefined);
+	};
+
+	const [count, setCount] = useState(1);
+
+	const handleAddItem = () => {
+		setItems((prev) => {
+			prev['container1'].push('ttest' + count);
+			setCount(count + 1);
+
+			return ({
+				...prev, container1: prev['container1']
+			});
+		});
+	};
+
+	const handleDeleteItem = () => {
+		if (count <= 1) {
+			return;
+		}
+
+		setItems((prev) => {
+			const newItems = prev['container1'].filter((item) => item !== 'ttest' + (count-1));
+			setCount(count - 1);
+
+			return ({
+				...prev, container1: newItems
+			});
+		});
 	};
 
 	return (
 		<Box sx={{ display: 'flex', flexDirection: 'row', m: 2 }}>
+			<Button sx={{ height: 30 }} variant='outlined' onClick={handleAddItem} >add</Button>
+			<Button sx={{ height: 30 }} variant='outlined' onClick={handleDeleteItem} >delete</Button>
 			<DndContext
 				sensors={sensors}
 				collisionDetection={closestCorners}
-				onDragStart={handleDragStart}
 				onDragOver={handleDragOver}
 				onDragEnd={handleDragEnd}
 			>
@@ -151,8 +171,10 @@ export const Container = () => {
 					label='menu4'
 				/>
 
-				<DragOverlay>{activeId ? <Item id={activeId} /> : null}</DragOverlay>
+				<DragOverlay dropAnimation={{ duration: 0 }}>
+					<DraggingItem />
+				</DragOverlay>
 			</DndContext>
 		</Box>
-	)
+	);
 };
