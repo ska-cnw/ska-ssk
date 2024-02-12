@@ -13,6 +13,8 @@ export const Container = () => {
 		container4: ['The Works Pizza'],
 	});
 
+	const [containers, setContainers] = useState(Object.keys(items));
+
 	const sensors = useSensors(
 		useSensor(PointerSensor),
 		useSensor(KeyboardSensor, {
@@ -125,51 +127,74 @@ export const Container = () => {
 		});
 	};
 
-	const handleDeleteItem = () => {
-		if (count <= 1) {
-			return;
-		}
+	const handleDeleteItem = (id) => {
+		const deleteContainer = findContainer(id);
 
 		setItems((prev) => {
-			const newItems = prev['container1'].filter((item) => item !== 'ttest' + (count-1));
-			setCount(count - 1);
-
 			return ({
-				...prev, container1: newItems
+				...prev,
+				[deleteContainer]: [
+					...prev[deleteContainer].filter((item) => item !== id)
+				],
 			});
 		});
 	};
 
+	const handleChangeItem = (id) => {
+		const changeContainer = findContainer(id);
+		const changeIndex = items[changeContainer].indexOf(id);
+
+		setItems((prev) => {
+			prev[changeContainer][changeIndex] = 'ttest';
+			console.log(prev)
+
+			return ({...prev});
+		})
+	}
+
 	return (
 		<Box sx={{ display: 'flex', flexDirection: 'row', m: 2 }}>
 			<Button sx={{ height: 30 }} variant='outlined' onClick={handleAddItem} >add</Button>
-			<Button sx={{ height: 30 }} variant='outlined' onClick={handleDeleteItem} >delete</Button>
 			<DndContext
 				sensors={sensors}
 				collisionDetection={closestCorners}
 				onDragOver={handleDragOver}
 				onDragEnd={handleDragEnd}
 			>
-				<SortableContainer
+				{containers.map((containerId) => (
+					<SortableContainer
+						key={containerId}
+						id={containerId}
+						label={containerId}
+						items={items[containerId]}
+						onDelete={handleDeleteItem}
+						onChange={handleChangeItem}
+					/>
+				))}
+				{/* <SortableContainer
 					id='container1'
 					items={items.container1}
 					label='menu1'
+					onDelete={handleDeleteItem}
 				/>
 				<SortableContainer
 					id='container2'
 					items={items.container2}
 					label='menu2'
+					onDelete={handleDeleteItem}
 				/>
 				<SortableContainer
 					id='container3'
 					items={items.container3}
 					label='menu3'
+					onDelete={handleDeleteItem}
 				/>
 				<SortableContainer
 					id='container4'
 					items={items.container4}
 					label='menu4'
-				/>
+					onDelete={handleDeleteItem}
+				/> */}
 
 				<DragOverlay dropAnimation={{ duration: 0 }}>
 					<DraggingItem />

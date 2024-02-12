@@ -3,7 +3,7 @@ import { SortableContext, rectSortingStrategy } from '@dnd-kit/sortable';
 import { SortableItem } from './SortableItem';
 import { Box } from '@mui/material';
 
-export const SortableContainer = ({ id, items, label }) => {
+export const SortableContainer = ({ id, items, label, onDelete, onChange }) => {
 	const { setNodeRef } = useDroppable({ id });
 
 	return (
@@ -23,7 +23,7 @@ export const SortableContainer = ({ id, items, label }) => {
 					}}
 				>
 					{items.map((id) => (
-						<SortableItem key={id} id={id} />
+						<SortableItem key={id} id={id} onDelete={() => onDelete(id)} onChange={() => onChange(id)} />
 					))}
 				</Box>
 			</SortableContext>

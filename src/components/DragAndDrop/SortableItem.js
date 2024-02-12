@@ -1,9 +1,11 @@
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities';
 import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
-import { Box } from '@mui/material';
+import ClearIcon from '@mui/icons-material/Clear';
+import EditIcon from '@mui/icons-material/Edit';
+import { Box, IconButton } from '@mui/material';
 
-export const SortableItem = ({ id }) => {
+export const SortableItem = ({ id, onDelete, onChange }) => {
 	const { attributes, listeners, setNodeRef, transform, transition, isDragging, setActivatorNodeRef } = useSortable({ id });
 
 	return (
@@ -40,6 +42,12 @@ export const SortableItem = ({ id }) => {
 					{id}
 				</Box>
 
+				<IconButton onClick={onChange} sx={{ p: 0 }}>
+					<EditIcon sx={{ fontSize: 10 }} />
+				</IconButton>
+				<IconButton onClick={onDelete} sx={{ p: 0 }}>
+					<ClearIcon sx={{ fontSize: 10 }} />
+				</IconButton>
 				<Box
 					ref={setActivatorNodeRef}
 					{...attributes}
