@@ -2,8 +2,9 @@ import { DndContext, DragOverlay, KeyboardSensor, PointerSensor, closestCorners,
 import { arrayMove, sortableKeyboardCoordinates } from '@dnd-kit/sortable';
 import { useState } from 'react';
 import { SortableContainer } from './SortableContainer';
-import { Box, Button } from '@mui/material';
+import { Box } from '@mui/material';
 import { DraggingItem } from './DraggingItem';
+import { NewItemDialog } from './NewItemDialog';
 
 export const Container = () => {
 	const [items, setItems] = useState({
@@ -135,21 +136,27 @@ export const Container = () => {
 		}
 	};
 
-	const [count, setCount] = useState(1);
+	const [activeContainerId, setActiveContainerId] = useState(undefined);
 
-	const handleAddItem = () => {
+	const handleOpenAddDialog = (id) => {
+		setOpen(true);
+		setActiveContainerId(id);
+	};
+
+	const handleAddItem = (containerId, newId) => {
 		setItems((prev) => {
-			prev['container1'].lists.push('ttest' + count);
-			setCount(count + 1);
+			prev[containerId].lists.push(newId);
 
 			return ({
 				...prev,
-				container1: {
-					...prev['container1'],
-					lists: prev['container1'].lists,
+				[containerId]: {
+					...prev[containerId],
+					lists: prev[containerId].lists,
 				}
 			});
 		});
+
+		setOpen(false);
 	};
 
 	const handleDeleteItem = (id) => {
@@ -175,20 +182,29 @@ export const Container = () => {
 		setItems((prev) => {
 			prev[changeContainer].lists[changeIndex] = 'ttest';
 
-			return ({...prev});
+			return ({ ...prev });
 		})
 	}
 
+	const [open, setOpen] = useState(false);
+	const [newItem, setNewItem] = useState('');
+
 	return (
 		<Box sx={{ display: 'flex', flexDirection: 'row', m: 2 }}>
-			<Button sx={{ height: 30 }} variant='outlined' onClick={handleAddItem} >add</Button>
+			<NewItemDialog
+				open={open}
+				onClose={() => setOpen(false)}
+				onUpdateText={(e) => setNewItem(e.target.value)}
+				onClickOk={() => handleAddItem(activeContainerId, newItem)}
+			/>
+
 			<DndContext
 				sensors={sensors}
 				collisionDetection={closestCorners}
 				onDragOver={handleDragOver}
 				onDragEnd={handleDragEnd}
 			>
-				{containers.map((containerId) => (
+				{containers.map((containerId, index) => (
 					<SortableContainer
 						key={containerId}
 						id={containerId}
@@ -196,6 +212,7 @@ export const Container = () => {
 						items={items[containerId].lists}
 						onDelete={handleDeleteItem}
 						onChange={handleChangeItem}
+						onAdd={index === 0 ? handleOpenAddDialog : undefined}
 					/>
 				))}
 
