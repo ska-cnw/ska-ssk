@@ -10,19 +10,19 @@ export const Container = () => {
 	const [items, setItems] = useState({
 		container1: {
 			label: '未割当',
-			lists: ['Cheese Pizza', 'Veggie Pizza', 'Pepperoni Pizza'],
+			lists: ['Cheese Pizza'],
 		},
 		container2: {
-			label: 'menu2',
-			lists: ['Meat Pizza', 'Margherita Pizza', 'BBQ Chicken Pizza'],
+			label: 'Category1',
+			lists: ['Veggie Pizza', 'Pepperoni Pizza', 'Meat Pizza', 'Shoyu Ramen', 'Shio Ramen'],
 		},
 		container3: {
-			label: 'menu3',
-			lists: ['Hawaiian Pizza', 'Buffalo Pizza', 'Supreme Pizza'],
+			label: 'Category2',
+			lists: ['Margherita Pizza', 'BBQ Chicken Pizza', 'Hawaiian Pizza', 'Miso Ramen', 'Tonkotsu Ramen'],
 		},
 		container4: {
-			label: 'menu4',
-			lists: ['The Works Pizza'],
+			label: 'Category3',
+			lists: ['Buffalo Pizza', 'Supreme Pizza', 'The Works Pizza', 'Taiwan Ramen', 'Onomichi Ramen', 'Okinawa Soba', 'Nagasaki Champon'],
 		},
 	});
 

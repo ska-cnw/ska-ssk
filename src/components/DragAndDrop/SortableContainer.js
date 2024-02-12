@@ -12,7 +12,7 @@ export const SortableContainer = ({ id, items, label, onDelete, onChange, onAdd 
 			sx={{
 				m: 1,
 				p: 2,
-				width: 250,
+				width: 300,
 				minHeight: 200,
 				bgcolor: '#C0C0C0',
 				borderRadius: 5,

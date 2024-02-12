@@ -23,7 +23,7 @@ export const SortableItem = ({ id, onDelete, onChange }) => {
 					borderWidth: '1px 1px 1px 10px',
 					borderColor: 'black black black purple',
 					borderRadius: 5,
-					width: 200,
+					width: 250,
 					height: 30,
 					m: 0.3,
 					p: 0.2,

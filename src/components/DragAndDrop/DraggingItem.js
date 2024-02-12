@@ -9,7 +9,7 @@ export const DraggingItem = () => {
 				flexDirection: 'row',
 				alignItems: 'center',
 				borderRadius: 1.5,
-				width: 200,
+				width: 250,
 				height: 30,
 				m: 0.3,
 				p: 0.2
