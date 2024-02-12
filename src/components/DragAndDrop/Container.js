@@ -7,10 +7,22 @@ import { DraggingItem } from './DraggingItem';
 
 export const Container = () => {
 	const [items, setItems] = useState({
-		container1: ['Cheese Pizza', 'Veggie Pizza', 'Pepperoni Pizza'],
-		container2: ['Meat Pizza', 'Margherita Pizza', 'BBQ Chicken Pizza'],
-		container3: ['Hawaiian Pizza', 'Buffalo Pizza', 'Supreme Pizza'],
-		container4: ['The Works Pizza'],
+		container1: {
+			label: '未割当',
+			lists: ['Cheese Pizza', 'Veggie Pizza', 'Pepperoni Pizza'],
+		},
+		container2: {
+			label: 'menu2',
+			lists: ['Meat Pizza', 'Margherita Pizza', 'BBQ Chicken Pizza'],
+		},
+		container3: {
+			label: 'menu3',
+			lists: ['Hawaiian Pizza', 'Buffalo Pizza', 'Supreme Pizza'],
+		},
+		container4: {
+			label: 'menu4',
+			lists: ['The Works Pizza'],
+		},
 	});
 
 	const [containers, setContainers] = useState(Object.keys(items));
@@ -27,7 +39,7 @@ export const Container = () => {
 			return id;
 		}
 		return Object.keys(items).find((key) => (
-			items[key].includes(id.toString())
+			items[key].lists.includes(id.toString())
 		));
 	};
 
@@ -50,33 +62,39 @@ export const Container = () => {
 		}
 
 		setItems((prev) => {
-			const activeItems = prev[activeContainer];
-			const overItems = prev[overContainer];
+			const activeLists = prev[activeContainer].lists;
+			const overLists = prev[overContainer].lists;
 
-			const activeIndex = activeItems.indexOf(id);
-			const overIndex = overItems.indexOf(overId.toString());
+			const activeIndex = activeLists.indexOf(id);
+			const overIndex = overLists.indexOf(overId.toString());
 
 			let newIndex;
 			if (overId in prev) {
-				newIndex = overItems.length + 1;
+				newIndex = overLists.length + 1;
 			} else {
-				const isBelowLastItem = over && overIndex === overItems.length - 1;
+				const isBelowLastItem = over && overIndex === overLists.length - 1;
 
 				const modifier = isBelowLastItem ? 1 : 0;
 
-				newIndex = overIndex >= 0 ? overIndex + modifier : overItems.length + 1;
+				newIndex = overIndex >= 0 ? overIndex + modifier : overLists.length + 1;
 			}
 
 			return {
 				...prev,
-				[activeContainer]: [
-					...prev[activeContainer].filter((item) => item !== active.id),
-				],
-				[overContainer]: [
-					...prev[overContainer].slice(0, newIndex),
-					items[activeContainer][activeIndex],
-					...prev[overContainer].slice(newIndex, prev[overContainer].length),
-				],
+				[activeContainer]: {
+					...prev[activeContainer],
+					lists: [
+						...activeLists.filter((item) => item !== active.id),
+					],
+				},
+				[overContainer]: {
+					...prev[overContainer],
+					lists: [
+						...overLists.slice(0, newIndex),
+						items[activeContainer].lists[activeIndex],
+						...overLists.slice(newIndex, prev[overContainer].length),
+					],
+				},
 			};
 		});
 	};
@@ -99,17 +117,20 @@ export const Container = () => {
 			return;
 		}
 
-		const activeIndex = items[activeContainer].indexOf(id);
-		const overIndex = items[overContainer].indexOf(overId.toString());
+		const activeIndex = items[activeContainer].lists.indexOf(id);
+		const overIndex = items[overContainer].lists.indexOf(overId.toString());
 
 		if (activeIndex !== overIndex) {
 			setItems((items) => ({
 				...items,
-				[overContainer]: arrayMove(
-					items[overContainer],
-					activeIndex,
-					overIndex
-				),
+				[overContainer]: {
+					...items[overContainer],
+					lists: arrayMove(
+						items[overContainer].lists,
+						activeIndex,
+						overIndex
+					),
+				},
 			}));
 		}
 	};
@@ -118,11 +139,15 @@ export const Container = () => {
 
 	const handleAddItem = () => {
 		setItems((prev) => {
-			prev['container1'].push('ttest' + count);
+			prev['container1'].lists.push('ttest' + count);
 			setCount(count + 1);
 
 			return ({
-				...prev, container1: prev['container1']
+				...prev,
+				container1: {
+					...prev['container1'],
+					lists: prev['container1'].lists,
+				}
 			});
 		});
 	};
@@ -133,20 +158,22 @@ export const Container = () => {
 		setItems((prev) => {
 			return ({
 				...prev,
-				[deleteContainer]: [
-					...prev[deleteContainer].filter((item) => item !== id)
-				],
+				[deleteContainer]: {
+					...prev[deleteContainer],
+					lists: [
+						...prev[deleteContainer].lists.filter((item) => item !== id)
+					],
+				},
 			});
 		});
 	};
 
 	const handleChangeItem = (id) => {
 		const changeContainer = findContainer(id);
-		const changeIndex = items[changeContainer].indexOf(id);
+		const changeIndex = items[changeContainer].lists.indexOf(id);
 
 		setItems((prev) => {
-			prev[changeContainer][changeIndex] = 'ttest';
-			console.log(prev)
+			prev[changeContainer].lists[changeIndex] = 'ttest';
 
 			return ({...prev});
 		})
@@ -165,36 +192,12 @@ export const Container = () => {
 					<SortableContainer
 						key={containerId}
 						id={containerId}
-						label={containerId}
-						items={items[containerId]}
+						label={items[containerId].label}
+						items={items[containerId].lists}
 						onDelete={handleDeleteItem}
 						onChange={handleChangeItem}
 					/>
 				))}
-				{/* <SortableContainer
-					id='container1'
-					items={items.container1}
-					label='menu1'
-					onDelete={handleDeleteItem}
-				/>
-				<SortableContainer
-					id='container2'
-					items={items.container2}
-					label='menu2'
-					onDelete={handleDeleteItem}
-				/>
-				<SortableContainer
-					id='container3'
-					items={items.container3}
-					label='menu3'
-					onDelete={handleDeleteItem}
-				/>
-				<SortableContainer
-					id='container4'
-					items={items.container4}
-					label='menu4'
-					onDelete={handleDeleteItem}
-				/> */}
 
 				<DragOverlay dropAnimation={{ duration: 0 }}>
 					<DraggingItem />
