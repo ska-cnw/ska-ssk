@@ -4,8 +4,8 @@ import { SortableItem } from './SortableItem';
 import { Box, IconButton, Typography } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 
-export const SortableContainer = ({ id, items, label, onDelete, onChange, onAdd }) => {
-	const { setNodeRef } = useDroppable({ id });
+export const SortableContainer = ({ containerId, items, label, onDelete, onChange, onAdd }) => {
+	const { setNodeRef } = useDroppable({ containerId });
 
 	return (
 		<Box
@@ -32,13 +32,13 @@ export const SortableContainer = ({ id, items, label, onDelete, onChange, onAdd 
 					{label}
 				</Typography>
 				{onAdd ? 
-					<IconButton onClick={() => onAdd(id)}>
+					<IconButton onClick={() => onAdd(containerId)}>
 						<AddIcon sx={{ fontSize: 15 }} />
 					</IconButton>
 				: undefined}
 			</Box>
 
-			<SortableContext id={id} items={items} strategy={rectSortingStrategy}>
+			<SortableContext id={containerId} items={items} strategy={rectSortingStrategy}>
 				<Box
 					ref={setNodeRef}
 					sx={{
@@ -50,7 +50,7 @@ export const SortableContainer = ({ id, items, label, onDelete, onChange, onAdd 
 					}}
 				>
 					{items.map((id) => (
-						<SortableItem key={id} id={id} onDelete={() => onDelete(id)} onChange={() => onChange(id)} />
+						<SortableItem key={id} id={id} onDelete={() => onDelete(id)} onChange={() => onChange(containerId, id)} />
 					))}
 				</Box>
 			</SortableContext>

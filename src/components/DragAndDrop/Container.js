@@ -143,6 +143,12 @@ export const Container = () => {
 		setActiveContainerId(id);
 	};
 
+	const handleOpenChangeDialog = (id, oldId) => {
+		setChangeOpen(true);
+		setActiveContainerId(id);
+		setOldItem(oldId);
+	};
+
 	const handleAddItem = (containerId, newId) => {
 		setItems((prev) => {
 			prev[containerId].lists.push(newId);
@@ -175,19 +181,22 @@ export const Container = () => {
 		});
 	};
 
-	const handleChangeItem = (id) => {
-		const changeContainer = findContainer(id);
-		const changeIndex = items[changeContainer].lists.indexOf(id);
+	const handleChangeItem = (containerId, oldId, newId) => {
+		const changeIndex = items[containerId].lists.indexOf(oldId);
 
 		setItems((prev) => {
-			prev[changeContainer].lists[changeIndex] = 'ttest';
+			prev[containerId].lists[changeIndex] = newId;
 
 			return ({ ...prev });
-		})
-	}
+		});
+
+		setChangeOpen(false);
+	};
 
 	const [open, setOpen] = useState(false);
+	const [changeOpen, setChangeOpen] = useState(false);
 	const [newItem, setNewItem] = useState('');
+	const [oldItem, setOldItem] = useState('');
 
 	return (
 		<Box sx={{ display: 'flex', flexDirection: 'row', m: 2 }}>
@@ -196,6 +205,12 @@ export const Container = () => {
 				onClose={() => setOpen(false)}
 				onUpdateText={(e) => setNewItem(e.target.value)}
 				onClickOk={() => handleAddItem(activeContainerId, newItem)}
+			/>
+			<NewItemDialog
+				open={changeOpen}
+				onClose={() => setChangeOpen(false)}
+				onUpdateText={(e) => setNewItem(e.target.value)}
+				onClickOk={() => handleChangeItem(activeContainerId, oldItem, newItem)}
 			/>
 
 			<DndContext
@@ -207,11 +222,11 @@ export const Container = () => {
 				{containers.map((containerId, index) => (
 					<SortableContainer
 						key={containerId}
-						id={containerId}
+						containerId={containerId}
 						label={items[containerId].label}
 						items={items[containerId].lists}
 						onDelete={handleDeleteItem}
-						onChange={handleChangeItem}
+						onChange={handleOpenChangeDialog}
 						onAdd={index === 0 ? handleOpenAddDialog : undefined}
 					/>
 				))}
