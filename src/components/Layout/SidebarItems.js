@@ -10,6 +10,7 @@ import SetMealIcon from '@mui/icons-material/SetMeal';
 import SoupKitchenIcon from '@mui/icons-material/SoupKitchen';
 import LocalBarIcon from '@mui/icons-material/LocalBar';
 import LocalPizzaIcon from '@mui/icons-material/LocalPizza';
+import FacebookIcon from '@mui/icons-material/Facebook';
 import Link from 'next/link';
 
 export const SidebarItems = ({ color, onlyIcon }) => {
@@ -27,6 +28,7 @@ export const SidebarItems = ({ color, onlyIcon }) => {
 		{ icon: <SoupKitchenIcon />,	label: 'Soup',			href: '/Soup'			},
 		{ icon: <LocalBarIcon />,			label: 'Bar',				href: '/Bar'			},
 		{ icon: <LocalPizzaIcon />,		label: 'Pizza',			href: '/Pizza'		},
+		{ icon: <FacebookIcon />,			label: '議事録',		href: '/posts/link'		},
 	];
 
 	return (
