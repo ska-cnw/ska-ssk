@@ -1,0 +1,75 @@
+Sub ttttttest()
+    Dim filename As String
+    filename = ThisWorkbook.path & "\testdata"
+    
+    Dim ttest As clsBinary
+    Set ttest = New clsBinary
+    Call ttest.FileToInnerData(filename)
+    
+    Dim paramsArray() As LongLong
+    ReDim paramsArray(31)
+    
+    Dim i As Long
+    Dim c As Variant
+    Dim ofs As Long
+    Dim siz As Integer
+    
+    For i = 0 To UBound(paramsArray)
+        ofs = Cells(4 + i, 3).Value
+        siz = Cells(4 + i, 4).Value
+        
+        paramsArray(i) = ttest.GetData(ofs, siz)
+    Next i
+    
+'    Range("E4:E35") = WorksheetFunction.Transpose(paramsArray)
+'    Call ArrayToCell(Range("E4"), paramsArray)
+    
+'    Debug.Print ttest.GetData(0, 4)
+'
+'    Call ttest.SetData(-1, 4, 4)
+'    filename = ThisWorkbook.path & "\testdata_out"
+'    Call ttest.InnerDataToFile(filename)
+    Call ttest.CellToFile(filename & "2")
+    Debug.Print "a"
+End Sub
+
+' jump
+Sub seltest()
+    Dim targetName As String
+    
+    ' ボタンのテキスト取得
+    targetName = ActiveSheet.Shapes(Application.Caller).TextFrame.Characters.Text
+    
+    Dim c As Variant
+    
+    ' 押されたボタンと一致するセルに移動
+    For Each c In Range("B4:B20003")
+        If c.Value = targetName Then
+            c.Select
+            Exit Sub
+        End If
+    Next
+End Sub
+
+' 配列をセルに貼り付け
+Sub ArrayToCell(ByRef topCell As Range, ByRef data As Variant)
+    Dim rowNum As Long
+    
+    rowNum = UBound(data) + 1
+    
+    topCell.Resize(rowNum) = WorksheetFunction.Transpose(data)
+End Sub
+
+' セルの値を配列に格納
+Function CellToArray(ByRef topCell As Range, ByVal colNum As Integer) As Variant
+    Dim endCell As Range
+    Set endCell = topCell.End(xlDown).offset(0, colNum - 1)
+    
+    CellToArray = Range(topCell, endCell)
+End Function
+
+Sub celltest()
+    Dim t As Variant
+    t = CellToArray(Range("C4"), 2)
+    Debug.Print UBound(t)
+End Sub

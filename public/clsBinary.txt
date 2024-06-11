@@ -1,0 +1,134 @@
+Option Explicit
+
+' 定数
+'Private Const cConst As Integer = 1
+
+' メンバ変数
+Private FilePath_ As String
+Private BinData_() As Byte
+Private Size_ As Long
+
+' コンストラクタ
+'Private Sub Class_Initialize()
+'
+'End Sub
+
+' デストラクタ
+'Private Sub Class_Terminate()
+'
+'End Sub
+
+' アクセサ
+'Property Let BinData(ByVal i As Long, ByVal data As Byte)
+'    BinData_(i) = data
+'End Property
+'
+'Property Get BinData(ByVal i As Long) As Byte
+'    BinData = BinData_(i)
+'End Property
+
+' メソッド
+Public Sub FileToInnerData(ByVal filePath As String)
+    Dim fn As Integer
+    
+    fn = FreeFile
+    Open filePath For Binary As #fn
+    FilePath_ = filePath
+    Size_ = LOF(fn)
+    ReDim BinData_(Size_ - 1)
+    Get #fn, , BinData_
+    
+    Close #fn
+End Sub
+
+Public Sub InnerDataToFile(ByVal filePath As String)
+    Dim fn As Integer
+        
+    fn = FreeFile
+    Open filePath For Binary As #fn
+    
+    Put #fn, , BinData_
+    
+    Close #fn
+End Sub
+
+Public Sub CellToFile(ByVal filePath As String)
+    ' 読み込んだバイナリデータを書き換え
+    Dim cellData As Variant
+    cellData = CellToArray(Range("C4"), 3)
+    
+    ReDim Preserve BinData_(79951)
+    
+    Dim i As Long
+    
+    For i = 1 To UBound(cellData)
+        Call SetData(cellData(i, 3), cellData(i, 1), cellData(i, 2))
+    Next i
+    
+    ' バイナリデータをバイナリファイルに書き込み
+    Call InnerDataToFile(filePath)
+End Sub
+
+
+Public Function GetData( _
+    ByVal offset As Long, _
+    ByVal size As Integer, _
+    Optional ByVal isSigned As Boolean = True _
+) As LongLong
+    If size > 4 Then    ' 8byteの読み込みは未対応
+        MsgBox "Size Over"
+        End
+    End If
+    
+    ' バイナリ→整数値
+    Dim idx As Long
+    
+    For idx = offset To offset + size - 1
+        ' 01 02 03 04 → 0x04030201
+        GetData = GetData + BinData_(idx) * (256 ^ (idx - offset))
+    Next idx
+
+    ' 符号なし→符号あり
+    If isSigned Then
+        Dim signedMax As LongLong   ' 符号なし最大値 + 1
+        signedMax = 256 ^ size
+        
+        If GetData >= signedMax / 2 Then    ' 負数
+            GetData = GetData - signedMax
+        End If
+    End If
+End Function
+
+Public Sub SetData( _
+    ByVal data As Long, _
+    ByVal offset As Long, _
+    ByVal size As Integer _
+)
+    If size > 4 Then    ' 8byteの書き込みは未対応
+        MsgBox "Size Over"
+        End
+    End If
+    
+    ' 符号あり→符号なし
+    Dim unsignedData As LongLong
+    
+    If data < 0 Then
+        Dim signedMax As LongLong
+        signedMax = 256 ^ size
+        
+        unsignedData = data + signedMax
+    Else
+        unsignedData = data
+    End If
+    
+    ' 整数値→バイナリ
+    Dim idx As Long
+    Dim byteData As Byte
+    
+    For idx = offset To offset + size - 1
+        ' 0x04030201 → 01 02 03 04
+        byteData = CByte((unsignedData \ (256 ^ (idx - offset))) And 255)
+        BinData_(idx) = byteData
+    Next idx
+End Sub
+
