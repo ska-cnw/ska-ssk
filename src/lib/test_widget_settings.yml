@@ -1,0 +1,10 @@
+settings:
+- checked: true
+  color: blue
+  number: 1
+- checked: false
+  color: red
+  number: 2
+- checked: false
+  color: yellow
+  number: 3
