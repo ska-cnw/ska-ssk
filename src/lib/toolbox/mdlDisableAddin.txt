@@ -1,0 +1,19 @@
+Option Explicit
+
+Sub getButtonLabel(control As IRibbonControl, label)
+    label = "無効化"
+End Sub
+
+Sub getButtonScreenTip(control As IRibbonControl, screentip)
+    screentip = "道具箱を無効化します"
+End Sub
+
+Sub onClick(control As IRibbonControl)
+    Dim execBatchPath As String
+    execBatchPath = "C:\Users\tai\AppData\Roaming\Microsoft\AddIns\01_disable.bat"
+    
+    Dim args As String
+    args = " addinTest"
+    
+    Call Shell(execBatchPath & args)
+End Sub
