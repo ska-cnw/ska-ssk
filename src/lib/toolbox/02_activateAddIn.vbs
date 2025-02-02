@@ -1,14 +1,17 @@
 Dim addinName
-addinName=Wscript.Arguments(0)
+addinName = WScript.Arguments(0)
 
-Call DeactivateAddIn
+Call activateAddIn
 
 
-Sub DeactivateAddIn
+Sub activateAddIn
 	Set Excel = GetObject(, "Excel.Application")
+
 	For Each x In Excel.AddIns
 		If x.Name = addinName Then
-			x.Installed = False
+			x.Installed = True
 		End If
 	Next
+
+	Set Excel = Nothing
 End Sub

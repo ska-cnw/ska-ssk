@@ -1,0 +1,211 @@
+--
+gTbData
+--
+Option Explicit
+
+' 定数
+Public Const TOOL_BOX_ADDIN_NAME As String = "addinTest"
+Public Const TOOL_BOX_EDITER_ADDIN_NAME As String = "ToolBoxEditer"
+
+' 変数
+Public PATH_APPDATA As String
+Public PATH_BIN As String
+Public LIST_EXE() As String
+
+--
+mdlTbCommon
+--
+Option Explicit
+
+Function toBinPath(ByVal filename As String) As String
+    Dim fso As Object
+    Set fso = CreateObject("Scripting.FileSystemObject")
+    
+    toBinPath = fso.BuildPath(gTbData.PATH_BIN, filename)
+    
+    Set fso = Nothing
+End Function
+
+Sub getFilenameListByExt(ByRef filenameList() As String, ByVal path As String, ByVal ext As String)
+    Dim fso As Object
+    Set fso = CreateObject("Scripting.FileSystemObject")
+    
+    Dim listCount As Integer
+    
+    Dim f As Object
+    For Each f In fso.GetFolder(path).Files
+        If fso.GetExtensionName(f) = ext Then
+            ReDim Preserve filenameList(listCount)
+            filenameList(listCount) = f.Name
+            listCount = listCount + 1
+        End If
+    Next
+    
+    Set f = Nothing
+    Set fso = Nothing
+End Sub
+
+--
+mdlTbeActivate
+--
+Option Explicit
+
+Private Const ACTIVATE_BATCH As String = "02_activateAddIn.bat"
+
+Sub getButtonLabel(control As IRibbonControl, label)
+    label = "有効化"
+End Sub
+
+Sub getButtonScreenTip(control As IRibbonControl, screentip)
+    screentip = "道具箱編集を有効化します"
+End Sub
+
+Sub onClick(control As IRibbonControl)
+    Dim execBatchPath As String
+    execBatchPath = toBinPath(ACTIVATE_BATCH)
+
+    Dim args As String
+    args = " " & TOOL_BOX_EDITER_ADDIN_NAME
+    
+    Call Shell(execBatchPath & args)
+End Sub
+
+--
+mdlTbeDeactivate
+--
+Option Explicit
+
+Private Const DEACTIVATE_BATCH As String = "01_deactivateAddIn.bat"
+
+Sub getButtonLabel(control As IRibbonControl, label)
+    label = "無効化"
+End Sub
+
+Sub getButtonScreenTip(control As IRibbonControl, screentip)
+    screentip = "道具箱編集を無効化します"
+End Sub
+
+Sub onClick(control As IRibbonControl)
+    Dim execBatchPath As String
+    execBatchPath = toBinPath(DEACTIVATE_BATCH)
+
+    Dim args As String
+    args = " " & TOOL_BOX_EDITER_ADDIN_NAME
+
+    Call Shell(execBatchPath & args)
+End Sub
+
+Sub ttest()
+    Dim itm As Variant
+    
+    itm = Array(3, 4)
+    
+'    Debug.Print LBound(itm), UBound(itm)
+
+    Dim filenameList() As String
+    Dim path As String
+    Dim ext As String
+    
+    path = "C:\Users\tai\AppData\Roaming\Microsoft\AddIns\bin"
+    ext = "bat"
+    
+    Call getFilenameListByExt(filenameList, path, ext)
+    Debug.Print filenameList(0), filenameList(1)
+End Sub
+
+--
+mdlTbInvalidate
+--
+Option Explicit
+
+Sub getButtonLabel(control As IRibbonControl, label)
+    label = "invalidate"
+End Sub
+
+Sub getButtonScreenTip(control As IRibbonControl, screentip)
+    screentip = "道具箱をリロードします"
+End Sub
+
+Sub onClick(control As IRibbonControl)
+    Call tbRibbon.Invalidate
+End Sub
+
+--
+mdlTbReload
+--
+Option Explicit
+
+Private Const RELOAD_VBS As String = "03_reloadAddIn.vbs"
+
+Sub getButtonLabel(control As IRibbonControl, label)
+    label = "reload"
+End Sub
+
+Sub getButtonScreenTip(control As IRibbonControl, screentip)
+    screentip = "道具箱を再読み込みします"
+End Sub
+
+Sub onClick(control As IRibbonControl)
+    Dim execVbsPath As String
+    execVbsPath = toBinPath(RELOAD_VBS)
+
+    Dim args As String
+    args = " " & TOOL_BOX_ADDIN_NAME & ".xlam"
+
+    Call Shell("cscript " & execVbsPath & args)
+End Sub
+
+--
+mdlTbRibbon
+--
+Option Explicit
+
+Public tbRibbon As IRibbonUI
+
+Sub onLoad(ribbon As IRibbonUI)
+    ' リボン
+    Set tbRibbon = ribbon
+    
+    ' グローバル変数セット
+    Dim fso As Object
+    Set fso = CreateObject("Scripting.FileSystemObject")
+    
+    gTbData.PATH_APPDATA = Environ("APPDATA")
+    gTbData.PATH_BIN = fso.BuildPath(gTbData.PATH_APPDATA, "Microsoft\AddIns\bin")
+    
+    Set fso = Nothing
+    
+    ' exeリスト作成
+    Call getFilenameListByExt(LIST_EXE, gTbData.PATH_BIN, "bat")
+End Sub
+
+--
+mdlTbToolLauncher
+--
+Option Explicit
+ 
+Public Sub getItemCount(control As IRibbonControl, count)
+  '配列の要素数からドロップダウンの項目数を設定します。
+  count = UBound(gTbData.LIST_EXE) + 1
+End Sub
+
+Public Sub getItemID(control As IRibbonControl, index, id)
+  'ドロップダウンの各項目のIDを設定します。
+  id = "itms" & index
+End Sub
+
+Public Sub getItemLabel(control As IRibbonControl, index, label)
+  '配列に格納した文字列からドロップダウンの各項目のラベルを設定します。
+  label = gTbData.LIST_EXE(index)
+End Sub
+
+Public Sub getSelectedItemID(control As IRibbonControl, id)
+  'デフォルトで選択されるドロップダウンの項目をIDで指定します。
+  id = "itms1"
+End Sub
+
+Public Sub onAction(control As IRibbonControl, id, index)
+  MsgBox "id:" & id & vbNewLine & _
+         "index:" & index & vbNewLine & _
+         gTbData.LIST_EXE(index), vbInformation + vbSystemModal
+End Sub

@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<customUI xmlns="http://schemas.microsoft.com/office/2006/01/customui" onLoad="mdlTbRibbon.onLoad">
+	<ribbon>
+		<tabs>
+			<tab id="Tab" label="道具箱">
+				<group id="buttonGroup" label="ボタン" visible="false">
+					<button
+						id="disableAddin"
+						imageMso="DisabledAddins"
+						size="large"
+						onAction="mdlTbeDeactivate.onClick"
+						getLabel="mdlTbeDeactivate.getButtonLabel"
+						getScreentip="mdlTbeDeactivate.getButtonScreenTip"
+					/>
+
+					<button
+						id="enableAddin"
+						imageMso="GroupAddins"
+						size="large"
+						onAction="mdlTbeActivate.onClick"
+						getLabel="mdlTbeActivate.getButtonLabel"
+						getScreentip="mdlTbeActivate.getButtonScreenTip"
+					/>
+
+					<separator id="sep01" />
+
+					<button
+						id="invalidateAddin"
+						imageMso="FileStartWorkflow"
+						onAction="mdlTbInvalidate.onClick"
+						getLabel="mdlTbInvalidate.getButtonLabel"
+						getScreentip="mdlTbInvalidate.getButtonScreenTip"
+					/>
+
+					<button
+						id="reloadAddin"
+						imageMso="GroupUpdate"
+						size="large"
+						onAction="mdlTbReload.onClick"
+						getLabel="mdlTbReload.getButtonLabel"
+						getScreentip="mdlTbReload.getButtonScreenTip"
+					/>
+				</group>
+
+				<group id="g" label="グループ">
+					<button id="Button1" imageMso="B" size="large" onAction="R_ShowMsg" getLabel="Module1.getButtonLabel" getScreentip="Module1.getButtonScreenTip" />	
+					<button id="Button2" imageMso="C" size="large" onAction="R_ShowMsg" getLabel="Module1.getButtonLabel" getScreentip="Module1.getButtonScreenTip" />	
+					<button id="Button3" imageMso="D" size="large" onAction="R_ShowMsg" getLabel="Module1.getButtonLabel" getScreentip="Module1.getButtonScreenTip" />	
+				</group>
+
+				<group id="group_id1" label="グループ2">
+					<button id="id01" imageMso="G" label="button" />
+
+					<checkBox id="id02" label="checkBox" />
+
+					<comboBox id="id03" imageMso="G" label="comboBox" />
+
+					<labelControl id="id04" label="labelControl" />
+
+					<toggleButton id="id05" imageMso="G" label="toggleButton" />
+
+					<editBox id="id06" imageMso="G" label="editBox" />
+
+					<dropDown id="id07" imageMso="G" label="dropDown" />
+
+					<gallery id="id08" imageMso="G" label="gallery" />
+
+					<menu id="id09" imageMso="G" label="menu">
+						<button id="id09_1" label="Button 1" imageMso="FileSave" />
+						<button id="id09_2" label="Button 2" imageMso="Undo" />
+					</menu>
+
+					<!-- <dynamicMenu id="id10" imageMso="G" label="dynamicMenu" getContent /> -->
+
+					<splitButton id="id11">
+						<button id="id11_1" imageMso="HappyFace" label="splitButton" />
+						<menu id="id11_2">
+							<button id="id11_2_1" label="Button 1" imageMso="FileSave" />
+							<button id="id11_2_2" label="Button 2" imageMso="Undo" />
+						</menu>
+					</splitButton>
+
+					<box id="id12" boxStyle="horizontal">
+						<button id="id12_1" label="Button 1" imageMso="FileSave" />
+						<button id="id12_2" label="Button 2" imageMso="Undo" />
+					</box>
+
+					<buttonGroup id="id13">
+						<button id="id13_1" imageMso="Bold" />
+						<button id="id13_2" imageMso="Italic" />
+						<button id="id13_3" imageMso="Underline" />
+					</buttonGroup>
+
+					<separator id="id14" />
+
+					<dropDown
+						id="exeList"
+						label="launcher"
+						getItemCount="mdlTbToolLauncher.getItemCount"
+						getItemID="mdlTbToolLauncher.getItemID"
+						getItemLabel="mdlTbToolLauncher.getItemLabel"
+						getSelectedItemID="mdlTbToolLauncher.getSelectedItemID"
+						onAction="mdlTbToolLauncher.onAction"
+					/>
+
+					<dialogBoxLauncher>
+						<button id="id15" screentip="Dialog Box Launcher" />
+					</dialogBoxLauncher>
+					<!-- control, labelControl, button, toggleButton, checkBox, editBox, comboBox, dropDown,
+					gallery, menu, dynamicMenu, splitButton, box, buttonGroup, separator, dialogBoxLauncher -->
+				</group>
+			</tab>
+		</tabs>
+	</ribbon>
+</customUI>

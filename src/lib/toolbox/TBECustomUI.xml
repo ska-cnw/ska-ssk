@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<customUI xmlns="http://schemas.microsoft.com/office/2006/01/customui" onLoad="mdlTbeRibbon.onLoad">
+	<ribbon>
+		<tabs>
+			<tab id="Tab" label="道具箱編集">
+				<group id="buttonGroup" label="ボタン">
+					<button
+						id="disableAddin"
+						imageMso="DisabledAddins"
+						size="large"
+						onAction="mdlTbDeactivate.onClick"
+						getLabel="mdlTbDeactivate.getButtonLabel"
+						getScreentip="mdlTbDeactivate.getButtonScreenTip"
+					/>
+
+					<button
+						id="enableAddin"
+						imageMso="GroupAddins"
+						size="large"
+						onAction="mdlTbActivate.onClick"
+						getLabel="mdlTbActivate.getButtonLabel"
+						getScreentip="mdlTbActivate.getButtonScreenTip"
+					/>
+
+					<separator id="sep01" />
+
+					<button
+						id="invalidateAddin"
+						imageMso="FileStartWorkflow"
+						onAction="mdlTbeInvalidate.onClick"
+						getLabel="mdlTbeInvalidate.getButtonLabel"
+						getScreentip="mdlTbeInvalidate.getButtonScreenTip"
+					/>
+
+					<button
+						id="reloadAddin"
+						imageMso="GroupUpdate"
+						size="large"
+						onAction="mdlTbeReload.onClick"
+						getLabel="mdlTbeReload.getButtonLabel"
+						getScreentip="mdlTbeReload.getButtonScreenTip"
+					/>
+				</group>
+			</tab>
+		</tabs>
+	</ribbon>
+</customUI>

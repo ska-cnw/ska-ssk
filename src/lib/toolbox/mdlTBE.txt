@@ -1,0 +1,137 @@
+--
+gTbeData
+--
+Option Explicit
+
+' 定数
+Public Const TOOL_BOX_ADDIN_NAME As String = "addinTest"
+Public Const TOOL_BOX_EDITER_ADDIN_NAME As String = "ToolBoxEditer"
+
+' 変数
+Public PATH_APPDATA As String
+Public PATH_BIN As String
+
+--
+mdlTbActivate
+--
+Option Explicit
+
+Private Const ACTIVATE_BATCH As String = "02_activateAddIn.bat"
+
+Sub getButtonLabel(control As IRibbonControl, label)
+    label = "有効化"
+End Sub
+
+Sub getButtonScreenTip(control As IRibbonControl, screentip)
+    screentip = "道具箱を有効化します"
+End Sub
+
+Sub onClick(control As IRibbonControl)
+    Dim execBatchPath As String
+    execBatchPath = toBinPath(ACTIVATE_BATCH)
+
+    Dim args As String
+    args = " " & TOOL_BOX_ADDIN_NAME
+    
+    Call Shell(execBatchPath & args)
+End Sub
+
+--
+mdlTbDeactivate
+--
+Option Explicit
+
+Private Const DEACTIVATE_BATCH As String = "01_deactivateAddIn.bat"
+
+Sub getButtonLabel(control As IRibbonControl, label)
+    label = "無効化"
+End Sub
+
+Sub getButtonScreenTip(control As IRibbonControl, screentip)
+    screentip = "道具箱を無効化します"
+End Sub
+
+Sub onClick(control As IRibbonControl)
+    Dim execBatchPath As String
+    execBatchPath = toBinPath(DEACTIVATE_BATCH)
+
+    Dim args As String
+    args = " " & TOOL_BOX_ADDIN_NAME
+
+    Call Shell(execBatchPath & args)
+End Sub
+
+--
+mdlTbeCommon
+--
+Option Explicit
+
+Function toBinPath(ByVal filename As String) As String
+    Dim fso As Object
+    Set fso = CreateObject("Scripting.FileSystemObject")
+    
+    toBinPath = fso.BuildPath(gTBEData.PATH_BIN, filename)
+    
+    Set fso = Nothing
+End Function
+
+--
+mdlTbeInvalidate
+--
+Option Explicit
+
+Sub getButtonLabel(control As IRibbonControl, label)
+    label = "invalidate"
+End Sub
+
+Sub getButtonScreenTip(control As IRibbonControl, screentip)
+    screentip = "道具箱編集をリロードします"
+End Sub
+
+Sub onClick(control As IRibbonControl)
+    Call tbeRibbon.Invalidate
+End Sub
+
+--
+mdlTbeReload
+--
+Option Explicit
+
+Private Const RELOAD_VBS As String = "03_reloadAddIn.vbs"
+
+Sub getButtonLabel(control As IRibbonControl, label)
+    label = "reload"
+End Sub
+
+Sub getButtonScreenTip(control As IRibbonControl, screentip)
+    screentip = "道具箱編集を再読み込みします"
+End Sub
+
+Sub onClick(control As IRibbonControl)
+    Dim execVbsPath As String
+    execVbsPath = toBinPath(RELOAD_VBS)
+
+    Dim args As String
+    args = " " & TOOL_BOX_EDITER_ADDIN_NAME & ".xlam"
+
+    Call Shell("cscript " & execVbsPath & args)
+End Sub
+
+--
+mdlTbeRibbon
+--
+Option Explicit
+
+Public tbeRibbon As IRibbonUI
+
+Sub onLoad(ribbon As IRibbonUI)
+    Set tbeRibbon = ribbon
+    
+    Dim fso As Object
+    Set fso = CreateObject("Scripting.FileSystemObject")
+    
+    gTBEData.PATH_APPDATA = Environ("APPDATA")
+    gTBEData.PATH_BIN = fso.BuildPath(gTBEData.PATH_APPDATA, "Microsoft\AddIns\bin")
+    
+    Set fso = Nothing
+End Sub
