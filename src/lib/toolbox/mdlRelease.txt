@@ -1,0 +1,59 @@
+Option Explicit
+
+Private Const SOURCE_CELL As String = "B4:E12"
+
+
+Sub CopySettings(ByVal kind As Integer)
+    Application.ScreenUpdating = False
+    
+    Dim srcCell As Range
+    
+    Select Case kind
+        Case 1:
+            Set srcCell = Range("H4:K12")
+        Case 2:
+            Set srcCell = Range("M4:P12")
+    End Select
+    
+    Call Range(SOURCE_CELL).Delete
+    Call Range(SOURCE_CELL).Insert(xlToRight)
+    Call srcCell.Copy(Range(SOURCE_CELL))
+    
+    Application.ScreenUpdating = True
+End Sub
+
+Sub ttst()
+    Dim stra As String
+    Dim ver As String
+    Dim fso As Object
+    
+    Set fso = CreateObject("Scripting.FileSystemObject")
+    
+    stra = ThisWorkbook.Path
+    
+    While stra <> ""
+        ver = InStrRev(stra, "\")
+        Debug.Print stra, GetFolderName(stra)
+        stra = fso.GetParentFolderName(stra)
+    Wend
+End Sub
+
+Function GetFolderName(ByVal strPath As String) As String
+    GetFolderName = Right(strPath, Len(strPath) - InStrRev(strPath, "\"))
+End Function
+
+Option Explicit
+
+
+Private Sub Worksheet_Change(ByVal Target As Range)
+    If Target.Row = 2 And Target.Column = 3 Then
+        Dim kind As String
+        kind = Target.Value
+        
+        If kind = "sysA" Then
+            Call CopySettings(1)
+        ElseIf kind = "sysB" Then
+            Call CopySettings(2)
+        End If
+    End If
+End Sub
