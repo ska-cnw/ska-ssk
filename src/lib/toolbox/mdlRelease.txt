@@ -1,59 +1,89 @@
 Option Explicit
 
-Private Const SOURCE_CELL As String = "B4:E12"
+
+Private Const INFO_NUM As Integer = 3
+Private Const INFO_HEADER_AREA As String = "A1:D10"
 
 
-Sub CopySettings(ByVal kind As Integer)
+Private Sub UserForm_Initialize()
     Application.ScreenUpdating = False
     
-    Dim srcCell As Range
+    Dim wbList As Workbook
+    Set wbList = Workbooks.Open("\list.xlsx")
     
-    Select Case kind
-        Case 1:
-            Set srcCell = Range("H4:K12")
-        Case 2:
-            Set srcCell = Range("M4:P12")
-    End Select
+    ' 選択肢をセルから配列に取り込み
+    Dim cellInfoLeftTop As Range
+    Set cellInfoLeftTop = GetSpecificStringCell("所属", wbList.Worksheets(1).Range(INFO_HEADER_AREA)).Offset(1, 0)
+    Dim arrayInfoList As Variant
+    arrayInfoList = LeftTopCellToTable(cellInfoLeftTop)
     
-    Call Range(SOURCE_CELL).Delete
-    Call Range(SOURCE_CELL).Insert(xlToRight)
-    Call srcCell.Copy(Range(SOURCE_CELL))
+    Set cellInfoLeftTop = Nothing
+    wbList.Close
+    Set wbList = Nothing
+    
+    ' 選択肢をリストボックスにセット
+    With Me.lbInfoList
+        .ColumnCount = INFO_NUM
+        .ColumnWidths = "50;50;100"
+        .List() = arrayInfoList
+    End With
     
     Application.ScreenUpdating = True
 End Sub
 
-Sub ttst()
-    Dim stra As String
-    Dim ver As String
-    Dim fso As Object
+Private Sub cbSetData_Click()
+    Dim index As Integer
+    index = Me.lbInfoList.ListIndex
     
-    Set fso = CreateObject("Scripting.FileSystemObject")
+    If index = -1 Then
+        Call Unload(frmInfoList)
+        Exit Sub
+    End If
     
-    stra = ThisWorkbook.Path
+    Application.ScreenUpdating = False
     
-    While stra <> ""
-        ver = InStrRev(stra, "\")
-        Debug.Print stra, GetFolderName(stra)
-        stra = fso.GetParentFolderName(stra)
-    Wend
+    Dim cellOutput As Range
+    Set cellOutput = Selection
+    
+    Dim i As Integer
+    
+    ' 選択したデータをセルに書き込み
+    For i = 0 To INFO_NUM - 1
+        cellOutput.Offset(i, 0).Value = Me.lbInfoList.List(index, i)
+    Next i
+    
+    Application.ScreenUpdating = True
+    
+    ' 書いたらフォームは閉じる
+    Call Unload(frmInfoList)
 End Sub
 
-Function GetFolderName(ByVal strPath As String) As String
-    GetFolderName = Right(strPath, Len(strPath) - InStrRev(strPath, "\"))
+Function GetSpecificStringCell(ByVal target As String, ByRef searchArea As Range) As Range
+    Dim c As Variant
+    
+    For Each c In searchArea
+        If c.Value = target Then
+            Set GetSpecificStringCell = c
+            Exit Function
+        End If
+    Next
 End Function
 
-Option Explicit
-
-
-Private Sub Worksheet_Change(ByVal Target As Range)
-    If Target.Row = 2 And Target.Column = 3 Then
-        Dim kind As String
-        kind = Target.Value
-        
-        If kind = "sysA" Then
-            Call CopySettings(1)
-        ElseIf kind = "sysB" Then
-            Call CopySettings(2)
-        End If
+' テーブルの左上のセル(引数)からテーブル右下までのセル範囲を返す
+Function LeftTopCellToTable(ByRef cellLeftTop As Range) As Range
+    Dim cellLeftBottom As Range
+    If cellLeftTop.Offset(1, 0).Value <> "" Then
+        Set cellLeftBottom = cellLeftTop.End(xlDown)
+    Else
+        Set cellLeftBottom = cellLeftTop
     End If
-End Sub
+    
+    Dim cellRightBottom As Range
+    If cellLeftBottom.Offset(0, 1).Value <> "" Then
+        Set cellRightBottom = cellLeftBottom.End(xlToRight)
+    Else
+        Set cellRightBottom = cellLeftBottom
+    End If
+    
+    Set LeftTopCellToTable = Range(cellLeftTop, cellRightBottom)
+End Function
